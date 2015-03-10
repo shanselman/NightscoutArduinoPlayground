@@ -130,6 +130,8 @@ void setup() {
 }
 
 void loop() {
+	lcd.setCursor(0, 0);
+	lcd.clear();
 	lcd.print("Connecting...");
 	if (client.connect(server, 80)) {
 		lcd.clear();
@@ -159,14 +161,11 @@ void loop() {
 
 	aJsonObject* root = aJson.parse(stringBuffer);
 
-	if (root != NULL)
-	{
+	if (root != NULL) {
 		aJsonObject* bgs = aJson.getObjectItem(root, "bgs");
-		if (bgs != NULL)
-		{
+		if (bgs != NULL) {
 			aJsonObject* def = aJson.getArrayItem(bgs, 0);
-			if (def != NULL)
-			{
+			if (def != NULL) {
 				aJsonObject* sgv = aJson.getObjectItem(def, "sgv");
 				String bg = sgv->valuestring;
 				int bgInt = bg.toInt();
@@ -181,7 +180,7 @@ void loop() {
 
 				lcd.setCursor(4, 1);
 
-				aJsonObject* direction = aJson.getObjectItem(def, "sgv");
+				aJsonObject* direction = aJson.getObjectItem(def, "direction");
 				String dir = direction->valuestring;
 				
 				if (dir == "Flat") lcd.write(byte(0));
@@ -199,6 +198,7 @@ void loop() {
 		}
 	}
 
+	memset(stringBuffer, 0, sizeof(stringBuffer));
 
 	delay(100000); //wait 100 sec
 
